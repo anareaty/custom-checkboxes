@@ -132,7 +132,7 @@ export default class CustomCheckboxes extends Plugin {
 									let view = target.closest(".markdown-preview-view")
 									let viewCheckboxes = view?.querySelectorAll('li[data-task="' + checkbox.symbol + '"') || []
 									let targetLi = target.closest("li")
-									let index
+									let index: number | undefined = undefined
 
 									viewCheckboxes.forEach((viewCheckbox, i) => {
 										if (viewCheckbox == targetLi) {
@@ -141,11 +141,11 @@ export default class CustomCheckboxes extends Plugin {
 									})
 
 									let file = this.app.workspace.getActiveFile()
-									if (file instanceof TFile) {
+									if (file instanceof TFile && typeof index == "number") {
 										let cache = this.app.metadataCache.getFileCache(file)
 										let listItems = cache?.listItems
 										if (listItems) {
-											let item = listItems.filter(l => l.task == checkbox.symbol)[index!]
+											let item = listItems.filter(l => l.task == checkbox.symbol)[index]
 											let line = item.position.start.line
 
 											this.app.vault.process(file, content => {
