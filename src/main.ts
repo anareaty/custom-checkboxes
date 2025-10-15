@@ -10,7 +10,7 @@ import { registerCheckboxPostProcessor } from './checkboxPostProcessor';
 
 
 export default class CustomCheckboxes extends Plugin {
-	settings: CustomCheckboxesSettings;
+	settings: CustomCheckboxesSettings
 
 	async onload() {
 		await this.loadSettings();
