@@ -13,7 +13,9 @@
     vertical-align: text-bottom;
 }
 
-
+.setting-item input.task-list-item-checkbox {
+    vertical-align: middle;
+}
 
 
 .checkbox-setting .setting-item-info {
@@ -69,4 +71,44 @@
     -webkit-mask-size: 100%;
 	-webkit-mask-image: var(--custom-checkbox-url);
     background-color: var(--custom-checkbox-color);
+}
+
+
+.image-suggestion-item.svg-icon  {
+  display: inline-block;
+}
+
+
+.menu-item-custom-color svg {
+  background: conic-gradient(
+    var(--color-red), 
+    var(--color-orange), 
+    var(--color-yellow), 
+    var(--color-green), 
+    var(--color-cyan),
+    var(--color-blue), 
+    var(--color-purple),
+    var(--color-red)
+  );
+  color: transparent;
+}
+
+
+.color-picker-modal {
+  width: fit-content;
+}
+
+.color-picker-modal .setting-item-info {
+  display: none;
+}
+
+
+.color-picker-modal input {
+  height: 80px;
+  width: 80px;
+}
+
+.color-picker-modal input::-webkit-color-swatch  {
+border-radius: 50%;
+height: 100% !important;
 }

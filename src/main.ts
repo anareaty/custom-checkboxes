@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, MarkdownRenderer, Modal, Notice, Plugin, PluginSettingTab, Setting, SuggestModal, TFile } from 'obsidian';
+import { App, Editor, MarkdownView, MarkdownRenderer, Modal, Notice, Plugin, PluginSettingTab, Setting, SuggestModal, TFile, getIcon } from 'obsidian';
 import { CustomCheckboxesSettingTab, CustomCheckboxesSettings, CC_DEFAULT_SETTINGS } from './settings';
 import { registerCheckboxExtension } from './checkboxExtension';
 import { registerCheckboxPostProcessor } from './checkboxPostProcessor';
@@ -208,6 +208,16 @@ export default class CustomCheckboxes extends Plugin {
 
 	onunload() {
 
+	}
+
+
+	getIconDataUri(iconId: string) {
+		let iconSvg = getIcon(iconId)
+		if (iconSvg) {
+			let encoded = encodeURIComponent(iconSvg.outerHTML)
+			let uri = "data:image/svg+xml;charset=utf-8," + encoded
+			return uri
+		}
 	}
 
 	async loadSettings() {

@@ -1,5 +1,7 @@
 import { App, Editor, MarkdownView, MarkdownRenderer, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import CustomCheckboxes from "./main";
+import { SvgSuggestModal } from './svgSuggestModal';
+import { createCheckboxColorMenu } from './colorMenu';
 
 
 export interface CustomCheckboxesSettings {
@@ -34,6 +36,26 @@ export class CustomCheckboxesSettingTab extends PluginSettingTab {
         for (let checkboxObj of this.plugin.settings.checkboxes) {
 
             let checkboxSetting = new Setting(containerEl)
+                checkboxSetting
+                .addButton(btn => btn
+                    .setIcon("image")
+                    .onClick(() => {
+                        new SvgSuggestModal(this.plugin, checkboxObj, this).open()
+                    })
+                )
+                .addButton(btn => btn
+                    .setIcon("paintbrush")
+                    .onClick((e) => {
+                        createCheckboxColorMenu(this.plugin, e, checkboxObj)
+                    })
+                )
+                .addButton(btn => btn
+                    .setIcon("settings")
+                    .onClick(() => {
+                        new CheckboxSettingsModal(this.plugin, checkboxObj).open()
+                    })
+                )
+            
                 .addText(text => {
                     text.setPlaceholder("Symbol")
                     .setValue(checkboxObj.symbol)
@@ -61,28 +83,18 @@ export class CustomCheckboxesSettingTab extends PluginSettingTab {
                         this.plugin.updateAllCheckboxes()
                     })
                 )
-                .addColorPicker(color => color
-                    .setValue(checkboxObj.color)
-					.onChange(async (value) => {
-						checkboxObj.color = value
-                        this.plugin.saveSettings()
-                        this.plugin.updateAllCheckboxes()
-					})
-                )
+
 
                 checkboxSetting.settingEl.classList.add("checkbox-setting")
                 let checkboxIcon = checkboxSetting.infoEl.createEl("span")
                 let symbol = checkboxObj.symbol
-                if (!symbol) symbol = "x"
+                if (!symbol) symbol = " "
                 
                 MarkdownRenderer.render(this.plugin.app, "- [" + symbol + "] ", checkboxIcon, "", this.plugin)
                 
-                checkboxSetting.addButton(btn => btn
-                    .setIcon("settings")
-                    .onClick(() => {
-                        new CheckboxSettingsModal(this.plugin.app, this.plugin, checkboxObj).open()
-                    })
-                )
+                
+                
+                checkboxSetting
                 .addButton(btn => btn
                     .setIcon("x")
                     .onClick(() => {
@@ -142,8 +154,8 @@ class CheckboxSettingsModal extends Modal {
     checkboxObj: any  
     plugin: CustomCheckboxes
 
-	constructor(app: App, plugin: CustomCheckboxes, checkboxObj: any) {
-		super(app);
+	constructor(plugin: CustomCheckboxes, checkboxObj: any) {
+		super(plugin.app);
         this.checkboxObj = checkboxObj
         this.plugin = plugin
 	}
@@ -231,11 +243,6 @@ class CheckboxSettingsModal extends Modal {
                     }
                 })
         }
-
-        
-        
-
-        
 	}
 
 	onClose() {
